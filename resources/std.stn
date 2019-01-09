@@ -1,0 +1,19 @@
+<page>
+    <!--Colors-->
+    <color id="link" model="rgb" val="0000EE"/>
+    <color id="visited_link" model="rgb" val="551A8B"/>
+    <color id="text" model="rgb" val="000000"/>
+    <color id="fill" model="rgb" val="ffffff"/>
+    <color id="border" model="rgb" val="000000"/>
+    <color id="shadow" model="rgb" val="212121"/>
+    <color id="emph" model="rgb" val="000000"/>
+    <!--General-->
+    <style select="*" focus="no" max_width="1cw" max_height="1ch" z="1"/>
+    <style select="center || border" phantom="yes"/>
+    <style select="* > center" center_x="..[x]" center_y="..[y]"/>
+    <!--Text-->
+    <style select="t" z="0"/>
+    <style select="*[link]" cursor="pointer" text_color="link"/>
+    <style select="strong" text_color="emph" font_weight="0.7"/>
+    <style select="h" text_color="emph" font_size="max(1.6em - depth(h) / 10, 1.1em)"/>
+</page>

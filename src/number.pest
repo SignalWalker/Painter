@@ -1,0 +1,22 @@
+Number = { ASCII_DIGIT+ ~ ("." ~ ASCII_DIGIT+)? }
+
+CW = { Number ~ "cw" }
+CH = { Number ~ "ch" }
+CD = { Number ~ "cd" }
+
+PW = { Number ~ "pw" }
+PH = { Number ~ "ph" }
+PD = { Number ~ "pd" }
+
+FW = { Number ~ "fw" }
+FH = { Number ~ "fh" }
+
+PX = { Number ~ "px" }
+
+Measure = _{
+   ( CW | CH | CD | PW | PH | PD | FW | FH | PX )
+}
+
+Main = _{
+   SOI ~ Measure ~ EOI
+}

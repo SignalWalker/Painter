@@ -1,0 +1,30 @@
+<page locale="us_en">
+    <import url="system.stns"/>
+    <color id="bg" val="00000080"/>
+    <color id="fg" val="ffffff"/>
+    <style select="*" focus="no" max_width="1cw" max_height="1ch"/>
+    <style select="style || color || border || center" visible="no" tangible="no"/>
+    <style select="*[link]" cursor="pointer"/>
+    <import url="style.stn"/>
+    <canvas id="gallery"/>
+    beef
+    <rect min_width=".5cw" min_height=".33ch" z="1" color="bg">
+        <center x=".5cw" y=".5ch"/>
+        <border full="yes" width="1px"/>
+        <rect width=".5cw" height="1ch">
+            <menu width=".5cw">
+                <item id="start" img="sun.svg"/>
+                <item id="settings" img="wheel.svg"/>
+                <item id="about" img="signal.svg"/>
+                <item id="exit" img="moon.svg"/>
+            </menu>
+        </rect>
+        <rect width="1px" height=".75ch" y=".125ch" color="white"/>
+        <rect width=".5cw" height="1ch">
+            <img id="menu_img">
+                <center x=".5cw" y=".5ch"/>
+            </img>
+        </rect>
+    </rect>
+    test
+</page>
