@@ -4,8 +4,8 @@ version = "0.1.0"
 authors = ["Ash Walker <ash@ashwalker.net>"]
 
 [dependencies]
-architect = { git = "https://github.com/SignalWalker/Architect" }
-lightcycle = { git = "https://github.com/SignalWalker/LightCycle" }
+architect = { path = "../architect" }
+lightcycle = { path = "../lightcycle" }
 rusttype = "^0.7"
 pest = "^2"
 pest_derive = "^2"

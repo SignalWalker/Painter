@@ -5,38 +5,37 @@ extern crate rusttype;
 #[macro_use]
 extern crate pest_derive;
 
-pub mod color;
+//pub mod color;
 pub mod style;
 
 use architect::birch::*;
 
 use architect::*;
-use color::XMLColor;
+
 use lightcycle::na::*;
-use lightcycle::plane::*;
-use lightcycle::volume::*;
+
 use lightcycle::*;
-use std::collections::HashMap;
+
 use std::str::FromStr;
 
 type Line3<N> = [Point3<N>; 2];
 type Line2<N> = [Point2<N>; 2];
 
-pub fn paint_tree<S: ::std::hash::BuildHasher>(
-    mut buf: Buffer<Color>,
-    colors: &HashMap<String, Color, S>,
-    xml: &Tree<Stone>,
-    clear: Option<Color>,
-) {
-    if let Some(c) = clear {
-        lightcycle::clear(&mut buf, c)
-    }
-    let page = [
-        [0, 0].into(),
-        [buf.size[0] as isize - 1, buf.size[1] as isize - 1].into(),
-    ];
-    paint_stone(&mut buf, colors, xml, &page, &page, &Vec::new()[..], 0);
-}
+// pub fn paint_tree<S: ::std::hash::BuildHasher>(
+//     mut buf: Buffer<Color>,
+//     colors: &HashMap<String, Color, S>,
+//     xml: &Tree<Stone>,
+//     clear: Option<Color>,
+// ) {
+//     if let Some(c) = clear {
+//         lightcycle::clear(&mut buf, c)
+//     }
+//     let page = [
+//         [0, 0].into(),
+//         [buf.size[0] as isize - 1, buf.size[1] as isize - 1].into(),
+//     ];
+//     paint_stone(&mut buf, colors, xml, &page, &page, &Vec::new()[..], 0);
+// }
 
 pub enum Overflow {
     Scroll,
@@ -87,78 +86,78 @@ impl FromStr for Slide {
     }
 }
 
-pub fn paint_stone<S: ::std::hash::BuildHasher>(
-    mut buf: &mut Buffer<Color>,
-    colors: &HashMap<String, Color, S>,
-    xml: &Tree<Stone>,
-    page: &Line2<isize>,
-    container: &Line2<isize>,
-    terrain: &[Line2<isize>],
-    index: usize,
-) -> Option<Line2<isize>> {
-    use Overflow::*;
-    let node = &xml[index];
-    match &node.value {
-        Stone::Element(el) => {
-            let visible = el.parse_attr_or(xml, index, "visible", true);
-            let slide = {
-                match node.branch() {
-                    None => Slide::Float,
-                    Some(b) => {
-                        let branch = &xml[b];
-                        if let Stone::Element(el) = &branch.value {
-                            el.parse_attr_or(xml, b, "slide", Slide::Float)
-                        } else {
-                            Slide::Float
-                        }
-                    }
-                }
-            };
-            let mut rect = get_area(xml, index, page, &container, &terrain[..], slide);
-            if visible {
-                let fill = colors[&el.parse_attr_or(xml, index, "fill", String::from("red"))];
-                let overflow = {
-                    match node.branch() {
-                        None => Over,
-                        Some(b) => {
-                            let branch = &xml[b];
-                            if let Stone::Element(el) = &branch.value {
-                                el.parse_attr_or(xml, b, "overflow", Over)
-                            } else {
-                                Over
-                            }
-                        }
-                    }
-                };
-                match overflow {
-                    Scroll => panic!("Not Implemented"),
-                    Hide => panic!("Not Implemented"),
-                    Scale => {
-                        rect[1][0] = isize::min(rect[1][0], container[1][0]);
-                        rect[1][1] = isize::min(rect[1][1], container[1][1]);
-                    }
-                    Over => (),
-                }
-                lightcycle::plane::draw_rect(
-                    &mut buf,
-                    fill,
-                    [
-                        Point2::from(rect[0].coords.xy()),
-                        Point2::from(rect[1].coords.xy()),
-                    ],
-                );
-            }
-            let mut terrain = Vec::new();
-            for leaf in node.leaves() {
-                if let Some(r) = paint_stone(buf, colors, xml, page, &rect, &terrain[..], *leaf) {
-                    terrain.push(r)
-                }
-            }
-            Some(rect)
-        }
-        Stone::Text(_t) => panic!("Not Implemented"),
-    }
-}
+// pub fn paint_stone<S: ::std::hash::BuildHasher>(
+//     mut buf: &mut Buffer<Color>,
+//     colors: &HashMap<String, Color, S>,
+//     xml: &Tree<Stone>,
+//     page: &Line2<isize>,
+//     container: &Line2<isize>,
+//     terrain: &[Line2<isize>],
+//     index: usize,
+// ) -> Option<Line2<isize>> {
+//     use Overflow::*;
+//     let node = &xml[index];
+//     match &node.value {
+//         Stone::Element(el) => {
+//             let visible = el.parse_attr_or(xml, index, "visible", true);
+//             let slide = {
+//                 match node.branch() {
+//                     None => Slide::Float,
+//                     Some(b) => {
+//                         let branch = &xml[b];
+//                         if let Stone::Element(el) = &branch.value {
+//                             el.parse_attr_or(xml, b, "slide", Slide::Float)
+//                         } else {
+//                             Slide::Float
+//                         }
+//                     }
+//                 }
+//             };
+//             let mut rect = get_area(xml, index, page, &container, &terrain[..], slide);
+//             if visible {
+//                 let fill = colors[&el.parse_attr_or(xml, index, "fill", String::from("red"))];
+//                 let overflow = {
+//                     match node.branch() {
+//                         None => Over,
+//                         Some(b) => {
+//                             let branch = &xml[b];
+//                             if let Stone::Element(el) = &branch.value {
+//                                 el.parse_attr_or(xml, b, "overflow", Over)
+//                             } else {
+//                                 Over
+//                             }
+//                         }
+//                     }
+//                 };
+//                 match overflow {
+//                     Scroll => panic!("Not Implemented"),
+//                     Hide => panic!("Not Implemented"),
+//                     Scale => {
+//                         rect[1][0] = isize::min(rect[1][0], container[1][0]);
+//                         rect[1][1] = isize::min(rect[1][1], container[1][1]);
+//                     }
+//                     Over => (),
+//                 }
+//                 lightcycle::plane::draw_rect(
+//                     &mut buf,
+//                     fill,
+//                     [
+//                         Point2::from(rect[0].coords.xy()),
+//                         Point2::from(rect[1].coords.xy()),
+//                     ],
+//                 );
+//             }
+//             let mut terrain = Vec::new();
+//             for leaf in node.leaves() {
+//                 if let Some(r) = paint_stone(buf, colors, xml, page, &rect, &terrain[..], *leaf) {
+//                     terrain.push(r)
+//                 }
+//             }
+//             Some(rect)
+//         }
+//         Stone::Text(_t) => panic!("Not Implemented"),
+//     }
+// }
 
 #[derive(Parser)]
 #[grammar = "number.pest"]
