@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Ash Walker <ash@ashwalker.net>"]
 
 [dependencies]
-architect = { git = "https://github.com/SignalWalker/Architect", rev = "4a99de0305e1c035831bbba2684258044d6fe722" }
+architect = { git = "https://github.com/SignalWalker/Architect", branch = "old" }
 lightcycle = { git = "https://github.com/SignalWalker/LightCycle" }
 rusttype = "^0.7"
 pest = "^2"
